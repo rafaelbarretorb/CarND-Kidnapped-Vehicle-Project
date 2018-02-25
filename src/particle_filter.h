@@ -71,21 +71,39 @@ public:
 	 * @param yaw_rate Yaw rate of car from t to t+1 [rad/s]
 	 */
 	void prediction(double delta_t, double std_pos[], double velocity, double yaw_rate);
+
 	
 	/**
-	 * dataAssociation Finds which observations correspond to which landmarks (likely by using
-	 *   a nearest-neighbors data association).
-	 * @param predicted Vector of predicted landmark observations
-	 * @param observations Vector of landmark observations
+	 * dataAssociation()
+
+	 Finds which observations correspond to which landmarks (likely by using
+	 a nearest-neighbors data association).
+
+
+	 Assign each sensor observation the map landmarki ID associated with it.
+
+	 * @param predicted 
+	 Vector of predicted landmark observations. between one particular particle and 
+	 all of the map landmarks within sensor range. {TOBS1, TOBS2, ..., TOBSi}
+
+	 * @param observations 
+	 Vector of landmark observations gathered from the Lidar Sensor. {L5, L1, L2}
 	 */
-	void dataAssociation(std::vector<LandmarkObs> predicted, std::vector<LandmarkObs>& observations);
+	void dataAssociation(Particle& particle, std::vector<LandmarkObs> predicted, std::vector<LandmarkObs>& observations);
+
+
 	
 	/**
-	 * updateWeights Updates the weights for each particle based on the likelihood of the 
-	 *   observed measurements. 
+	 * updateWeights 
+
+	 Updates the weights for each particle based on the likelihood of the  observed measurements. 
+
 	 * @param sensor_range Range [m] of sensor
+
 	 * @param std_landmark[] Array of dimension 2 [Landmark measurement uncertainty [x [m], y [m]]]
+
 	 * @param observations Vector of landmark observations
+
 	 * @param map Map class containing map landmarks
 	 */
 	void updateWeights(double sensor_range, double std_landmark[], const std::vector<LandmarkObs> &observations,
